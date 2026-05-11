@@ -10,10 +10,12 @@ export async function Header() {
   const isLoggedIn = !!session?.session;
 
   return (
-    <header className="h-24 border-b px-6">
+    <header className="fixed h-24 w-full px-6">
       <div className="flex h-full w-full items-center justify-between">
         <Link href="/" passHref className="flex h-full items-center">
-          <h1 className="relative">Example</h1>
+          <h1 className="relative font-semibold text-gray-800">
+            Modern Next.js Stack
+          </h1>
         </Link>
 
         <div className="flex items-center gap-2">

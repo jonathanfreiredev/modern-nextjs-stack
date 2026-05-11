@@ -1,16 +1,102 @@
+import Link from "next/link";
+import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
 import { getSession } from "@/lib/better-auth/server";
+import { Button } from "@/components/ui/button";
+import { BackgroundCircles } from "@/components/background-circles";
+
+const technologies = [
+  "Next.js 16",
+  "next-safe-action",
+  "Better-Auth",
+  "Prisma 7",
+  "Tailwind 4",
+  "Zod",
+];
+
+const cx = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export default async function HomePage() {
   const session = await getSession();
-
   const isLoggedIn = !!session?.session;
+  const userName = session?.user?.name;
 
   return (
-    <p>
-      Hello {isLoggedIn ? session.user.name : "world"}.{" "}
-      {isLoggedIn
-        ? "You are authenticated!"
-        : "You can log in to see more content."}
-    </p>
+    <section className="relative isolate overflow-x-clip px-4 py-8 sm:px-6 lg:px-8">
+      <BackgroundCircles />
+
+      <div className="mx-auto grid min-h-[calc(100dvh-var(--header-height,4rem))] w-full max-w-5xl place-items-center text-center">
+        <div className="w-full space-y-8">
+          {isLoggedIn ? (
+            <div className="border-border/70 bg-background/70 text-muted-foreground mx-auto inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm">
+              <Sparkles className="text-primary size-3.5" />
+              <span>{`Hello ${userName ?? "there"}`}</span>
+            </div>
+          ) : null}
+
+          <div className="space-y-4">
+            <h1
+              className={cx(
+                "text-4xl font-semibold tracking-tight text-balance sm:text-5xl md:text-6xl lg:text-7xl",
+                "from-foreground via-primary bg-linear-to-r to-fuchsia-500 bg-clip-text text-transparent",
+              )}
+            >
+              Modern Next.js Stack
+            </h1>
+            <p className="text-muted-foreground mx-auto max-w-2xl text-sm text-pretty sm:text-base md:text-lg">
+              A production-ready template built with the latest ecosystem.
+            </p>
+          </div>
+
+          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-2">
+            {technologies.map((tech) => (
+              <span
+                key={tech}
+                className="border-border/70 bg-background/70 text-foreground/90 inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <Link
+                href="https://github.com/jonathanfreiredev/modern-nextjs-stack"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Get Started
+                <ArrowRight className="size-4" />
+              </Link>
+            </Button>
+
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="bg-background/70 w-full sm:w-auto"
+            >
+              <Link
+                href="https://nextjs.org/docs"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <BookOpen className="size-4" />
+                View Documentation
+              </Link>
+            </Button>
+          </div>
+
+          <p className="text-muted-foreground/90 text-xs sm:text-sm">
+            {isLoggedIn
+              ? "You are authenticated and ready to ship."
+              : "Sign in to unlock the complete starter experience."}
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }

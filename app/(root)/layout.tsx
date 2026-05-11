@@ -3,5 +3,5 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main className="flex flex-1 flex-col p-6">{children}</main>;
+  return <main className="flex flex-1 flex-col">{children}</main>;
 }
